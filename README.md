@@ -13,7 +13,11 @@ $ kubectl apply -f src/test/kubernetes/selenium-hub.yaml
 # either deploy Chrome or Firefox or both (if you have enough memory)
 $ kubectl apply -f src/test/kubernetes/selenium-node-chrome.yaml
 $ kubectl apply -f src/test/kubernetes/selenium-node-firefox.yaml
+
+# use port forwarding to Selenium Hub
+$ kubectl port-forward service/selenium-hub 4444
 ```
+
 
 ## References
 
