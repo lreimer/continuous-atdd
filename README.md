@@ -2,6 +2,19 @@
 
 Continuous ATDD on K8s using the Geb Framework and Selenium Hub.
 
+## Usage
+
+First, we need to deploy the required Selenium infrastructure to K8s. The Selenium
+hub is required, and also at least one browser node.
+```bash
+# deploy the Selenium hub to connect to
+$ kubectl apply -f src/test/kubernetes/selenium-hub.yaml
+
+# either deploy Chrome or Firefox or both (if you have enough memory)
+$ kubectl apply -f src/test/kubernetes/selenium-node-chrome.yaml
+$ kubectl apply -f src/test/kubernetes/selenium-node-firefox.yaml
+```
+
 ## References
 
 - https://github.com/kubernetes/examples/tree/master/staging/selenium
