@@ -18,6 +18,7 @@ class HomePageSpec extends GebReportingSpec {
 
         then: 'the index page is displayed'
         waitFor { at IndexPage }
+        report "index page"
 
         and: 'the headline is correct'
         assertThat headline.text(), containsString("Qualität und Agilität")
@@ -29,6 +30,7 @@ class HomePageSpec extends GebReportingSpec {
 
         then: 'the career page is displayed correctly'
         waitFor { at CareerPage }
+        report "career page"
         assertThat headline.text(), containsString("ARBEITSPLATZ")
     }
 
@@ -38,6 +40,7 @@ class HomePageSpec extends GebReportingSpec {
 
         then: 'the community page is displayed correctly'
         waitFor { at CommunityPage }
+        report "community page"
         assertThat headline.text(), containsString("IT-Community")
     }
 }
