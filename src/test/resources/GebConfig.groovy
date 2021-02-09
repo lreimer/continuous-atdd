@@ -29,7 +29,9 @@ environments {
 	chromeRemote {
 		driver = {
 			ChromeOptions o = new ChromeOptions()
-			new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), o);
+			def host = System.getenv('SELENIUM_HUB_HOST') ?: 'localhost'
+			def port = System.getenv('SELENIUM_HUB_PORT') ?: '4444'
+			new RemoteWebDriver(new URL("http://${host}:${port}/wd/hub"), o);
 		}
 	}
 	
@@ -44,7 +46,9 @@ environments {
 	firefoxRemote {
 		driver = {
 			FirefoxOptions o = new FirefoxOptions()
-			new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), o);
+			def host = System.getenv('SELENIUM_HUB_HOST') ?: 'localhost'
+			def port = System.getenv('SELENIUM_HUB_PORT') ?: '4444'
+			new RemoteWebDriver(new URL("http://${host}:${port}/wd/hub"), o);
 		}
 	}
 }

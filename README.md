@@ -18,11 +18,39 @@ $ kubectl apply -f src/test/kubernetes/selenium-node-firefox.yaml
 $ kubectl port-forward service/selenium-hub 4444
 ```
 
+Next, we can run the Geb UI tests using either local or remote browsers.
+```bash
+$ ./gradlew testClasses
+
+$ ./gradlew chromeTest          # local Chrome with UI
+$ ./gradlew chromeHeadlessTest  # local Chrome in headless mode
+$ ./gradlew firefoxTest         # local Firefox with UI
+
+$ ./gradlew chromeRemote        # remote Chrome running in K8s
+$ ./gradlew firefoxRemote        # remote Firefox running in K8s
+```
+
+Of course, we can also run the Geb test from within the cluster as a Cronjob or
+as an adhoc pod.
+```bash
+$ docker build -t lreimer/continuous-atdd:latest .
+$ docker push
+
+# either run continuously using cronjob
+$ kubectl apply -f src/test/kubernetes/chrome-remote-cronjob.yaml
+$ kubectl apply -f src/test/kubernetes/firefox-remote-cronjob.yaml
+
+# or run adhoc pods
+$ kubectl run chrome-remote-test --image lreimer/continuous-atdd:latest --restart=Never --attach --env="SELENIUM_HUB_HOST=selenium-hub" --env="SELENIUM_HUB_PORT=4444" --command -- ./gradlew chromeRemote
+$ kubectl delete pod/chrome-remote-test
+
+$ kubectl run firefox-remote-test --image lreimer/continuous-atdd:latest --restart=Never --attach --env="SELENIUM_HUB_HOST=selenium-hub" --env="SELENIUM_HUB_PORT=4444" --command -- ./gradlew firefoxRemote
+$ kubectl delete pod/firefox-remote-test
+```
 
 ## References
 
 - https://github.com/kubernetes/examples/tree/master/staging/selenium
-- https://gist.github.com/elsonrodriguez/261e746cf369a60a5e2d
 
 ## Maintainer
 

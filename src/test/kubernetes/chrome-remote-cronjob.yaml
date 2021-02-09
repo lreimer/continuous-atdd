@@ -1,0 +1,24 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: chrome-remote-test
+spec:
+  schedule: "*/2 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: test
+              image: lreimer/continuous-atdd:latest
+              env:
+                - name: SELENIUM_HUB_HOST
+                  value: selenium-hub
+                - name: SELENIUM_HUB_PORT
+                  value: '4444'
+              command:
+                - './gradlew'
+              args:
+                - chromeRemote
+              imagePullPolicy: Always
+          restartPolicy: Never

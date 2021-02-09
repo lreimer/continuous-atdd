@@ -48,6 +48,10 @@ drivers.each { driver ->
 
         systemProperty "geb.build.reportsDir", reporting.file("geb/$name")
         systemProperty "geb.env", driver
+
+        testLogging {
+            events "passed", "skipped", "failed"
+        }
     }
 }
 
