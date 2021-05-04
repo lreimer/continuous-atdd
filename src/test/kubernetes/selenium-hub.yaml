@@ -11,7 +11,7 @@ spec:
     name: port0
   selector:
     app: selenium-hub
-  type: NodePort
+  type: LoadBalancer
   sessionAffinity: None
 ---
 apiVersion: apps/v1
