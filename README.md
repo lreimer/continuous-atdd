@@ -8,14 +8,15 @@ First, we need to deploy the required Selenium infrastructure to K8s. The Seleni
 hub is required, and also at least one browser node.
 ```bash
 # deploy the Selenium hub to connect to
-$ kubectl apply -f src/test/kubernetes/selenium-hub.yaml
+$ kubectl create ns selenium-hub
+$ kubectl apply -f src/test/kubernetes/selenium-hub.yaml -n selenium-hub
 
 # either deploy Chrome or Firefox or both (if you have enough memory)
-$ kubectl apply -f src/test/kubernetes/selenium-node-chrome.yaml
-$ kubectl apply -f src/test/kubernetes/selenium-node-firefox.yaml
+$ kubectl apply -f src/test/kubernetes/selenium-node-chrome.yaml -n selenium-hub
+$ kubectl apply -f src/test/kubernetes/selenium-node-firefox.yaml -n selenium-hub
 
-# use port forwarding to Selenium Hub
-$ kubectl port-forward service/selenium-hub 4444
+# use port forwarding to Selenium Hub for local execution
+$ kubectl port-forward service/selenium-hub 4444 -n selenium-hub
 ```
 
 Next, we can run the Geb UI tests using either local or remote browsers.
@@ -37,8 +38,8 @@ $ docker build -t lreimer/continuous-atdd:latest .
 $ docker push
 
 # either run continuously using cronjob
-$ kubectl apply -f src/test/kubernetes/chrome-remote-cronjob.yaml
-$ kubectl apply -f src/test/kubernetes/firefox-remote-cronjob.yaml
+$ kubectl apply -f src/test/kubernetes/chrome-remote-cronjob.yaml -n selenium-hub
+$ kubectl apply -f src/test/kubernetes/firefox-remote-cronjob.yaml -n selenium-hub
 
 # or run adhoc pods
 $ kubectl run chrome-remote-test --image lreimer/continuous-atdd:latest --restart=Never --attach --env="SELENIUM_HUB_HOST=selenium-hub" --env="SELENIUM_HUB_PORT=4444" --command -- ./gradlew chromeRemote
